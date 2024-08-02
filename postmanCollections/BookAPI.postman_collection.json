@@ -1,0 +1,435 @@
+{
+	"info": {
+		"_postman_id": "4946d4e7-06db-4fbc-bde4-7d58a73b3762",
+		"name": "BookAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4020808",
+		"_collection_link": "https://orange-station-991691.postman.co/workspace/rest-try~2081ccf2-7cd4-46ce-917b-fc5519ed3699/collection/4020808-4946d4e7-06db-4fbc-bde4-7d58a73b3762?action=share&source=collection_link&creator=4020808"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = JSON.parse(responseBody);",
+							"",
+							"if(response.status === \"OK\"){",
+							"    postman.setEnvironmentVariable(\"userLoginEmail\", response.result.email);",
+							"    postman.setEnvironmentVariable(\"auth_type\", response.result.type);",
+							"    postman.setEnvironmentVariable(\"auth_token\", response.result.token)",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "B",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"{{userLoginEmail}}\",\n    \"password\": \"{{userLoginPassword}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}:{{port}}/api/v1/auth/login",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = JSON.parse(responseBody);",
+							"var request = JSON.parse(pm.request.body);",
+							"",
+							"if(response.status === \"OK\"){",
+							"    postman.setEnvironmentVariable(\"userLoginEmail\", request.email);",
+							"    postman.setEnvironmentVariable(\"userLoginPassword\", request.password);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"123456\",\n    \"name\": \"{{$randomFirstName}}\",\n    \"username\": \"{{$randomUserName}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}:{{port}}/api/v1/auth/register",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = JSON.parse(responseBody);",
+							"",
+							"if(response.status === \"OK\"){",
+							"    postman.setEnvironmentVariable(\"userLoginEmail\", response.result.email);",
+							"    postman.setEnvironmentVariable(\"userFullName\", response.result.name);",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "B",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJlbWFpbCI6ImZhdGloQGZhdGloLmNvbSIsIm5hbWUiOiJmYXRpaCIsInVzZXJuYW1lIjoiZmF0aWhzIiwiaWF0IjoxNjg1Mzc0NDU1LCJleHAiOjE2ODU0NjA4NTV9.mvp15PUqqt3nPdbLwze-MZq9HX-ys-nQv7uOMSoQQKY",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"{{$randomUserName}}\",\n    \"name\": \"{{$randomFullName}}\",\n    \"password\": \"123456\",\n    \"role\": 4\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}:{{port}}/api/user",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Borrow Book",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"day\": 4\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}:{{port}}/api/book/7/borrow",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"book",
+						"7",
+						"borrow"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Return Borrowed Book",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"rating\": 4\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}:{{port}}/api/book/7/return",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"book",
+						"7",
+						"return"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Books",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"day\": 4\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}:{{port}}/api/book/7/borrow",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"book",
+						"7",
+						"borrow"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Book",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"",
+							"const min = 3;",
+							"const max = 5;",
+							"",
+							"function randomNumber(min, max) {",
+							"    return Math.random() * (max - min) + min;",
+							"}",
+							"function randomString(min, max) {",
+							"    const list = \"ABCDEFGHIJKLMNPQRSTUVWXYZ\";",
+							"    var res = \"\";",
+							"    for(var i = 0; i < randomNumber(min, max); i++) {",
+							"        var rnd = Math.floor(Math.random() * list.length);",
+							"        res = res + list.charAt(rnd);",
+							"    }",
+							"    return res;",
+							"}",
+							"pm.variables.set('randomPaperName', randomString(min, max));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"{{$randomCompanyName}}\",\n    \"description\": \"{{$randomLoremWords}}\",\n    \"imageUrl\": \"{{$randomImageUrl}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}:{{port}}/api/book/create",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"book",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Book Portfolio",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"",
+							"const min = 3;",
+							"const max = 5;",
+							"",
+							"function randomNumber(min, max) {",
+							"    return Math.random() * (max - min) + min;",
+							"}",
+							"function randomString(min, max) {",
+							"    const list = \"ABCDEFGHIJKLMNPQRSTUVWXYZ\";",
+							"    var res = \"\";",
+							"    for(var i = 0; i < randomNumber(min, max); i++) {",
+							"        var rnd = Math.floor(Math.random() * list.length);",
+							"        res = res + list.charAt(rnd);",
+							"    }",
+							"    return res;",
+							"}",
+							"pm.variables.set('randomPaperName', randomString(min, max));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}:{{port}}/api/paper/portfolio",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"paper",
+						"portfolio"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
